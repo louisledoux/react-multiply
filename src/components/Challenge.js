@@ -6,8 +6,8 @@ class Challenge extends Component {
         this.state = {
             karaAnswer: 0,
             karaScore: 0,
-            randFirstNumber: Math.floor(Math.random() * (10-1) + 1),
-            randSecondNumber: Math.floor(Math.random() * (10-1) + 1)
+            randFirstNumber: Math.floor(Math.random() * (11-1) + 1),
+            randSecondNumber: Math.floor(Math.random() * (11-1) + 1)
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -29,8 +29,8 @@ class Challenge extends Component {
             this.setState({ karaScore: this.state.karaScore - 1 });
         }
 
-        this.setState({ randFirstNumber: Math.floor(Math.random() * (10-1) + 1) });
-        this.setState({ randSecondNumber: Math.floor(Math.random() * (10-1) + 1) });
+        this.setState({ randFirstNumber: Math.floor(Math.random() * (11-1) + 1) });
+        this.setState({ randSecondNumber: Math.floor(Math.random() * (11-1) + 1) });
 
         event.preventDefault();
     }
