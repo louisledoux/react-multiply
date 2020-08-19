@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import { Tabs, Tab, Select, Button } from 'react-materialize';
+import { firestore } from '../firebase';
 
 class Challenge extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            karaAnswer: null,
+            userName: "",
+
+            karaAnswer: "",
             karaScore: 0,
             
             challengeQuestions: 1,
@@ -30,7 +33,6 @@ class Challenge extends Component {
     handleMultiplyChange = (event) => {
         let {id, value} = event.currentTarget;
 
-        //Convert 'value' from string to integer
         value = parseInt(value);
 
         //Apply min and max multiplies values
@@ -42,6 +44,11 @@ class Challenge extends Component {
             this.setState({ multiplyMin: value });
             this.setState({ multiplyMax: value + 1 });
         }
+    }
+
+    // Check for username change
+    handleUsernameChange = (event) => {
+        this.setState({ userName: event.target.value });
     }
 
     // Initialize first multiply question and display the challenge onscreen
@@ -66,29 +73,59 @@ class Challenge extends Component {
 
         //Convert answer from string to integer
         const answer = parseInt(this.state.karaAnswer)
-    
-        if (this.state.challengeQuestions === 20) {
-            //End the challenge and send Kara Score to Database
+
+        //Give a point if the answer is correct
+        if (result === answer) {
+            this.setState({ karaScore: this.state.karaScore + 1 });
+        }
+        
+        /* ------
+        Lignes 86 a 121: code poubelle en bonne et due forme, j'ai honte
+        ------ */
+        
+        if (this.state.challengeQuestions === 20 && result === answer) {
+
+            //Create an object newScore
+            let newScore = {
+                userName: this.state.userName,
+                multiplyMin: this.state.multiplyMin,
+                multiplyMax: this.state.multiplyMax - 1,
+                karaScore: this.state.karaScore + 1
+            }
+
+            // Send the object to the database
+            const db = firestore;
+            db.collection('rankings').add(newScore);
+
+            //Display End Component
+            this.setState({ challengeIsFinished: true });
+            
+
+        } else if (this.state.challengeQuestions === 20 && result !== answer) {
+
+            //Create an object newScore
+            let newScore = {
+                userName: this.state.userName,
+                multiplyMin: this.state.multiplyMin,
+                multiplyMax: this.state.multiplyMax - 1,
+                karaScore: this.state.karaScore
+            }
+
+            // Send the object to the database
+            const db = firestore;
+            db.collection('rankings').add(newScore);
+
+            //Display End Component
             this.setState({ challengeIsFinished: true });
 
-            /* ------
-            DATABASE CONNEXION NEEDS TO BE SET HERE
-            ------ */
-
-
-        } else {
-            //Give a point if the answer is correct
-            if (result === answer) {
-                this.setState({ karaScore: this.state.karaScore + 1 });
-            }
-            
+        } else {    
             //Generate new multiplies values for the next question and increment to the next question
             this.setState({ randFirstNumber: Math.floor(Math.random() * (this.state.multiplyMax - this.state.multiplyMin) + this.state.multiplyMin) });
             this.setState({ randSecondNumber: Math.floor(Math.random() * (11-1) + 1) });
             this.setState({ challengeQuestions: this.state.challengeQuestions + 1 });
 
             //Reset Input Field for the next question
-            this.setState({ karaAnswer: null });
+            this.setState({ karaAnswer: "" });
             document.getElementById("challengeForm").reset();
         }
 
@@ -114,7 +151,8 @@ class Challenge extends Component {
                             </div>
                             <div className="input-field col l6 s12">
                                 <input type="text" id="karaAnswerField" className="validate" name="karaAnswerField" value={this.state.karaAnswer} onChange={this.handleResultChange}></input>
-                                <label htmlFor="karaAnswerField">Entre le résultat ici !</label>
+                                <label htmlFor="karaAnswerField"></label>
+                                <span class="helper-text">Entre le résultat ici !</span>
                             </div>
                         </div>
                     </form>
@@ -175,8 +213,8 @@ class Challenge extends Component {
                                             }
                                         }}
                                         value=""
-                                        s="12"
-                                        l="9"
+                                        s={12}
+                                        l={12}
                                         >
                                         <option
                                             disabled
@@ -184,37 +222,43 @@ class Challenge extends Component {
                                         >
                                             Je veux travailler ma table de...
                                         </option>
-                                        <option value="1">
+                                        <option value={1}>
                                             Table de 1
                                         </option>
-                                        <option value="2">
+                                        <option value={2}>
                                             Table de 2
                                         </option>
-                                        <option value="3">
+                                        <option value={3}>
                                             Table de 3
                                         </option>
-                                        <option value="4">
+                                        <option value={4}>
                                             Table de 4
                                         </option>
-                                        <option value="5">
+                                        <option value={5}>
                                             Table de 5
                                         </option>
-                                        <option value="6">
+                                        <option value={6}>
                                             Table de 6
                                         </option>
-                                        <option value="7">
+                                        <option value={7}>
                                             Table de 7
                                         </option>
-                                        <option value="8">
+                                        <option value={8}>
                                             Table de 8
                                         </option>
-                                        <option value="9">
+                                        <option value={9}>
                                             Table de 9
                                         </option>
-                                        <option value="10">
+                                        <option value={10}>
                                             Table de 10
                                         </option>
                                     </Select>
+
+                                    <div className="input-field col l9 s12">
+                                        <i className="material-icons prefix">face</i>
+                                        <input type="text" placeholder="Mon nom" id="userName" className="validate" name="userName" value={this.state.userName} onChange={this.handleUsernameChange}></input>
+                                        <label htmlFor="userName">Rentre ton nom ici !</label>
+                                    </div>
 
                                     <div className="col l3 s12 challenge-button" style={{paddingTop: 20 + 'px'}}>
                                         <Button
@@ -262,8 +306,8 @@ class Challenge extends Component {
                                             }
                                         }}
                                         value=""
-                                        s="12"
-                                        l="6"
+                                        s={12}
+                                        l={6}
                                         >
                                         <option
                                             disabled
@@ -271,34 +315,34 @@ class Challenge extends Component {
                                         >
                                             Je veux travailler ma table de...
                                         </option>
-                                        <option value="1">
+                                        <option value={1}>
                                             Table de 1
                                         </option>
-                                        <option value="2">
+                                        <option value={2}>
                                             Table de 2
                                         </option>
-                                        <option value="3">
+                                        <option value={3}>
                                             Table de 3
                                         </option>
-                                        <option value="4">
+                                        <option value={4}>
                                             Table de 4
                                         </option>
-                                        <option value="5">
+                                        <option value={5}>
                                             Table de 5
                                         </option>
-                                        <option value="6">
+                                        <option value={6}>
                                             Table de 6
                                         </option>
-                                        <option value="7">
+                                        <option value={7}>
                                             Table de 7
                                         </option>
-                                        <option value="8">
+                                        <option value={8}>
                                             Table de 8
                                         </option>
-                                        <option value="9">
+                                        <option value={9}>
                                             Table de 9
                                         </option>
-                                        <option value="10">
+                                        <option value={10}>
                                             Table de 10
                                         </option>
                                     </Select>
@@ -325,8 +369,8 @@ class Challenge extends Component {
                                             }
                                         }}
                                         value=""
-                                        s="12"
-                                        l="6"
+                                        s={12}
+                                        l={6}
                                         >
                                         <option
                                             disabled
@@ -334,39 +378,45 @@ class Challenge extends Component {
                                         >
                                             Jusqu'à ma table de ...
                                         </option>
-                                        <option value="1">
+                                        <option value={1}>
                                             Table de 1
                                         </option>
-                                        <option value="2">
+                                        <option value={2}>
                                             Table de 2
                                         </option>
-                                        <option value="3">
+                                        <option value={3}>
                                             Table de 3
                                         </option>
-                                        <option value="4">
+                                        <option value={4}>
                                             Table de 4
                                         </option>
-                                        <option value="5">
+                                        <option value={5}>
                                             Table de 5
                                         </option>
-                                        <option value="6">
+                                        <option value={6}>
                                             Table de 6
                                         </option>
-                                        <option value="7">
+                                        <option value={7}>
                                             Table de 7
                                         </option>
-                                        <option value="8">
+                                        <option value={8}>
                                             Table de 8
                                         </option>
-                                        <option value="9">
+                                        <option value={9}>
                                             Table de 9
                                         </option>
-                                        <option value="10">
+                                        <option value={10}>
                                             Table de 10
                                         </option>
                                     </Select>
 
-                                    <div className="col l3 offset-l9 s12 challenge-button" style={{paddingTop: 20 + 'px'}}>
+                                    <div className="input-field col l9 s12">
+                                        <i className="material-icons prefix">face</i>
+                                        <input type="text" placeholder="Mon nom" id="userName" className="validate" name="userName" value={this.state.userName} onChange={this.handleUsernameChange}></input>
+                                        <label htmlFor="userName">Rentre ton nom ici !</label>
+                                    </div>
+
+                                    <div className="col l3 s12 challenge-button" style={{paddingTop: 20 + 'px'}}>
                                         <Button
                                             node="button"
                                             type="submit"

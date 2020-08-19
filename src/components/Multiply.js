@@ -2,6 +2,7 @@ import React from 'react';
 import { Navbar, Icon, Table, Tabs, Tab } from 'react-materialize';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Challenge from './Challenge';
+import Ranking from './Ranking';
 
 const Multiply = () => {
     return (
@@ -27,6 +28,7 @@ const Multiply = () => {
                 >
                     <Link to="/tutorial">Mes Tables de Multiplication</Link>
                     <Link to="/challenge">Time to Exercice !</Link>
+                    <Link to="/rankings">Classements</Link>
                 </Navbar>
             </header>
 
@@ -34,6 +36,7 @@ const Multiply = () => {
                 <Switch>
                     <Route path="/tutorial"><Tutorial /></Route>
                     <Route path="/challenge"><Challenge /></Route>
+                    <Route path="/rankings"><Ranking /></Route>
                     <Route path="/"><Home /></Route>
                 </Switch>
             </main>
@@ -49,14 +52,14 @@ export const Home = () => {
             <div className="row">
                 <div className="col l12 s12">
                     <div className="center">
-                        <h1 className="flow-text">Multiply - Kara Special Edition</h1>
+                        <h1 className="flow-text">Multiply - Un petit site pour ses tables de multiplication</h1>
                     </div>
                     <hr/>
                     <div className="center flow-text">
-                        <p>Bonjour Jeune fille.</p>
-                        <p>Voici un petit programme rien que pour toi pour que tu puisses travailler tes tables de multiplication.</p>
+                        <p>Bien le bonjour les Jeunes !</p>
+                        <p>Voici un petit programme pour que vous puissiez travailler vos tables de multiplication.</p>
                         <p>Enjoy ! <Icon>sentiment_very_satisfied</Icon></p>
-                        <img alt="clones multiplying" src="https://media1.tenor.com/images/d2c1871e3eaa3579eee2e794fdc56393/tenor.gif?itemid=15938044"></img>
+                        <img alt="clones multiplying" style={{maxWidth: 100 + '%'}} src="https://media1.tenor.com/images/d2c1871e3eaa3579eee2e794fdc56393/tenor.gif?itemid=15938044"></img>
                     </div>
                 </div>
             </div>
@@ -82,7 +85,7 @@ export const Tutorial = () => {
                         >
                             <br/>
                             <div className="row">
-                                <div className="col l6 offset-l3">
+                                <div className="col l6 offset-l3 s12">
                                     <Table hoverable>
                                         <thead>
                                             <tr>
@@ -191,7 +194,7 @@ export const Tutorial = () => {
                         >
                             <br/>
                             <div className="row">
-                                <div className="col l6 offset-l3">
+                                <div className="col l6 offset-l3 s12">
                                     <Table hoverable>
                                         <thead>
                                             <tr>
@@ -300,7 +303,7 @@ export const Tutorial = () => {
                         >
                             <br/>
                             <div className="row">
-                                <div className="col l6 offset-l3">
+                                <div className="col l6 offset-l3 s12">
                                     <Table hoverable>
                                         <thead>
                                             <tr>
@@ -409,7 +412,7 @@ export const Tutorial = () => {
                         >
                             <br/>
                             <div className="row">
-                                <div className="col l6 offset-l3">
+                                <div className="col l6 offset-l3 s12">
                                     <Table hoverable>
                                         <thead>
                                             <tr>
@@ -518,7 +521,7 @@ export const Tutorial = () => {
                         >
                             <br/>
                             <div className="row">
-                                <div className="col l6 offset-l3">
+                                <div className="col l6 offset-l3 s12">
                                     <Table hoverable>
                                         <thead>
                                             <tr>
@@ -627,7 +630,7 @@ export const Tutorial = () => {
                         >
                             <br/>
                             <div className="row">
-                                <div className="col l6 offset-l3">
+                                <div className="col l6 offset-l3 s12">
                                     <Table hoverable>
                                         <thead>
                                             <tr>
@@ -736,7 +739,7 @@ export const Tutorial = () => {
                         >
                             <br/>
                             <div className="row">
-                                <div className="col l6 offset-l3">
+                                <div className="col l6 offset-l3 s12">
                                     <Table hoverable>
                                         <thead>
                                             <tr>
@@ -845,7 +848,7 @@ export const Tutorial = () => {
                         >
                             <br/>
                             <div className="row">
-                                <div className="col l6 offset-l3">
+                                <div className="col l6 offset-l3 s12">
                                     <Table hoverable>
                                         <thead>
                                             <tr>
@@ -954,7 +957,7 @@ export const Tutorial = () => {
                         >
                             <br/>
                             <div className="row">
-                                <div className="col l6 offset-l3">
+                                <div className="col l6 offset-l3 s12">
                                     <Table hoverable>
                                         <thead>
                                             <tr>
@@ -1063,7 +1066,7 @@ export const Tutorial = () => {
                         >
                             <br/>
                             <div className="row">
-                                <div className="col l6 offset-l3">
+                                <div className="col l6 offset-l3 s12">
                                     <Table hoverable>
                                         <thead>
                                             <tr>
